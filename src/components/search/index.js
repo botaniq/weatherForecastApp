@@ -1,6 +1,6 @@
 import React from 'react';
 
-class Search extends React.Component {
+export default class extends React.Component {
     render() {
         const {city, handleInput, submitAction} = this.props;
 
@@ -28,5 +28,3 @@ class Search extends React.Component {
         )
     }
 }
-
-export default Search;

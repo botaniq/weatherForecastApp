@@ -1,12 +1,12 @@
 import React from 'react';
-import {ENDPOINTS} from '../constants';
+import {ENDPOINTS} from '../../constants';
 
 function toCelsius(kelvin) {
     let celsius = kelvin - 273.15;
     return celsius.toFixed(1);
 }
 
-class List extends React.Component {
+export default class extends React.Component {
 
     renderEmptyMessage() {
         return (
@@ -49,5 +49,3 @@ class List extends React.Component {
     }
 
 }
-
-export default List;

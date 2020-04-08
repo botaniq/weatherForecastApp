@@ -1,45 +1,43 @@
-import React from 'react';
-import { connect } from 'react-redux';
-import Search from '~c/Search';
-import Period from '~c/Period';
-import Dates from '~c/Date';
-import List from '~c/List';
+import React from 'react'
+import {connect} from 'react-redux'
+import {Route, Switch} from 'react-router-dom'
+import Main from '~p/main'
+import Forecast from '~p/forecast'
 import {ENDPOINTS} from './constants';
 
-import { updateCityValue, updatePeriodValue, setWeather, updateSuccessFetch, setTemperature } from './data/actions/actions.js';
-
+import { updateCity } from '~a/search';
+import { updatePeriod, setWeather, updateSuccessFetch, setTemperature } from '~a/period';
 
 class App extends React.Component {
-
     componentDidMount() {
         this.fetchWeather();
     }
 
     componentDidUpdate(prevProps, prevState, snapshot) {
-        if (prevProps.store.reducers.period !== this.props.store.reducers.period) {
+        if (prevProps.store.period.period !== this.props.store.period.period) {
             this.fetchWeather();
         }
     }
 
     searchHandler = event => {
         const {value: city} = event.target;
-        this.props.updateCityValue(city);
+        this.props.updateCity(city);
     }
 
-    periodHandler = event => {
-        const {value: period} = event.target;
-        this.props.updatePeriodValue(period);
+    periodHandler = period => {
+        this.props.updatePeriod(period);
     }
 
     fetchWeather = event => {
-        let {city, period} = this.props.store.reducers;
+        let {period} = this.props.store.period;
+        let {city} = this.props.store.search;
+
 
         if (event) event.preventDefault();
 
         if (city === '') {
             this.props.setWeather([]);
             this.props.updateSuccessFetch(true);
-
             return;
         }
 
@@ -70,7 +68,6 @@ class App extends React.Component {
                 this.props.setWeather(weather);
                 this.props.updateSuccessFetch(true);
                 this.props.setTemperature(temperature);
-                // this.setState({temperature})
                 })
             .catch(e => {
                 this.props.setWeather([]);
@@ -80,32 +77,29 @@ class App extends React.Component {
     }
 
     render() {
-        let {city, period, weather, successFetch, temperature} = this.props.store.reducers;
-
         return (
-            <div className="weather-app">
-                <Search
-                    city={city}
-                    submitAction={this.fetchWeather}
-                    handleInput={this.searchHandler}
-                />
-                <div className="weather-app__content">
-                    {/*<Period*/}
-                    {/*    handleRadio={this.periodHandler}*/}
-                    {/*    period={period}*/}
-                    {/*/>*/}
-                    {successFetch
-                        ? <div>
-                            <Dates
-                                period={period} />
-                            <List
-                                weather={weather}
-                                temperature={temperature} />
-                        </div>
-
-                        : <div className="text-center">Loading...</div>}
-                </div>
-            </div>
+            <main>
+                <Switch>
+                    <Route exact path="/" render={() =>
+                        <Main
+                            {...this.props}
+                            fetchWeather = {this.fetchWeather}
+                            searchHandler = {this.searchHandler}
+                            periodHandler = {this.periodHandler}
+                        />
+                    } />
+                    <Route path="/forecastThreeDays" render={() =>
+                        <Forecast
+                            {...this.props}
+                        />
+                    } />
+                    <Route exact path="/forecastWeek" render={() =>
+                        <Forecast
+                            {...this.props}
+                        />
+                    } />
+                </Switch>
+            </main>
         )
     }
 }
@@ -115,11 +109,11 @@ export default connect(
         store: state
     }),
     dispatch => ({
-        updateCityValue: (value) => {
-            dispatch( updateCityValue(value) )
+        updateCity: (value) => {
+            dispatch( updateCity(value) )
         },
-        updatePeriodValue: (value) => {
-            dispatch( updatePeriodValue(value) )
+        updatePeriod: (value) => {
+            dispatch( updatePeriod(value) )
         },
         setWeather: (array) => {
             dispatch( setWeather(array) )

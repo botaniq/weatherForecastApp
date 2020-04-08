@@ -72,6 +72,7 @@ let conf = {
         alias: {
             '~': path.resolve(__dirname, 'src'),
             '~c': path.resolve(__dirname, 'src/components'),
+            '~p': path.resolve(__dirname, 'src/pages'),
             '~d': path.resolve(__dirname, 'src/data'),
             '~a': path.resolve(__dirname, 'src/data/actions'),
             '~r': path.resolve(__dirname, 'src/data/reducers')

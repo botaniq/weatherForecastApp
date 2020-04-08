@@ -1,6 +1,6 @@
 import React from 'react';
 
-class Dates extends React.Component {
+export default class extends React.Component {
 
     render() {
         let today = new Date(),
@@ -44,5 +44,3 @@ class Dates extends React.Component {
         )
     }
 }
-
-export default Dates;
