@@ -6,6 +6,7 @@ import Forecast from '~p/forecast'
 import {ENDPOINTS} from './constants';
 
 import { updateCity } from '~a/search';
+import { addItem } from '~a/history';
 import { updatePeriod, setWeather, updateSuccessFetch, setTemperature } from '~a/period';
 
 class App extends React.Component {
@@ -28,10 +29,23 @@ class App extends React.Component {
         this.props.updatePeriod(period);
     }
 
+    updateWeather = (city, weather, temperature) => {
+        this.props.updateCity(city);
+        this.props.setWeather(weather);
+        this.props.setTemperature(temperature);
+    }
+
     fetchWeather = event => {
         let {period} = this.props.store.period;
         let {city} = this.props.store.search;
+        let {history} = this.props.store.history;
+        let lastCity = '';
 
+        if (history.length > 0) {
+            lastCity = history[history.length - 1].city;
+        }
+
+        if (lastCity === city) return;
 
         if (event) event.preventDefault();
 
@@ -68,6 +82,12 @@ class App extends React.Component {
                 this.props.setWeather(weather);
                 this.props.updateSuccessFetch(true);
                 this.props.setTemperature(temperature);
+                this.props.addItem({
+                    city,
+                    weather,
+                    temperature,
+                    id: `f${(~~(Math.random()*1e8)).toString(16)}`
+                });
                 })
             .catch(e => {
                 this.props.setWeather([]);
@@ -77,12 +97,14 @@ class App extends React.Component {
     }
 
     render() {
+        console.log(this.props.store.history);
         return (
             <main>
                 <Switch>
                     <Route exact path="/" render={() =>
                         <Main
                             {...this.props}
+                            updateWeather = {this.updateWeather}
                             fetchWeather = {this.fetchWeather}
                             searchHandler = {this.searchHandler}
                             periodHandler = {this.periodHandler}
@@ -91,11 +113,13 @@ class App extends React.Component {
                     <Route path="/forecastThreeDays" render={() =>
                         <Forecast
                             {...this.props}
+                            periodHandler = {this.periodHandler}
                         />
                     } />
                     <Route exact path="/forecastWeek" render={() =>
                         <Forecast
                             {...this.props}
+                            periodHandler = {this.periodHandler}
                         />
                     } />
                 </Switch>
@@ -111,6 +135,9 @@ export default connect(
     dispatch => ({
         updateCity: (value) => {
             dispatch( updateCity(value) )
+        },
+        addItem: (obj) => {
+            dispatch( addItem(obj) )
         },
         updatePeriod: (value) => {
             dispatch( updatePeriod(value) )

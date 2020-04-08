@@ -11,7 +11,7 @@ export default class extends React.Component {
             todayYear = today.getFullYear();
 
         switch(this.props.period) {
-            case '1':
+            case 1:
                 return (
                     <div className="dates">
                         <div className="text-center alert alert-warning">
@@ -19,10 +19,10 @@ export default class extends React.Component {
                         </div>
                     </div>
                 )
-            case '3':
+            case 3:
                 periodDate.setDate(periodDate.getDate() + 3);
                 break;
-            case '7':
+            case 7:
                 periodDate.setDate(periodDate.getDate() + 7);
                 break;
             default:

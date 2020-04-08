@@ -7,3 +7,6 @@ export const SET_TEMPERATURE = 'SET_TEMPERATURE';
 
 /* search */
 export const UPDATE_CITY = 'UPDATE_CITY_VALUE';
+
+/* history */
+export const ADD_ITEM = 'ADD_ITEM';

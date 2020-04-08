@@ -2,11 +2,12 @@ import React from "react"
 import {Link} from 'react-router-dom'
 import Search from "~c/search"
 import Period from "~c/period";
+import History from "~c/history";
 
 class Main extends React.Component {
     render() {
         let {city} = this.props.store.search;
-        console.log(this.props.store);
+
         return(
            <div className="weather-app container">
                <Search
@@ -22,6 +23,7 @@ class Main extends React.Component {
                        <Link onClick={() => this.props.periodHandler(3)} to='/forecastThreeDays'>Three Days</Link>
                        <Link onClick={() => this.props.periodHandler(7)} to='/forecastWeek'>Week</Link>
                    </div>
+                   <History {...this.props}/>
                </div>
            </div>
         )

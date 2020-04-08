@@ -1,7 +1,7 @@
 import { UPDATE_PERIOD, UPDATE_SUCCESS_FETCH, SET_WEATHER, SET_TEMPERATURE } from '~d/actionTypes';
 
 let initialState = {
-    period: '1',
+    period: 1,
     successFetch: false,
     weather: [],
     temperature: []

@@ -14,6 +14,7 @@ export default class extends React.Component {
                             <Dates
                                 period={period} />
                             <List
+                                period={period}
                                 weather={weather}
                                 temperature={temperature} />
                         </div>

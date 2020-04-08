@@ -17,13 +17,30 @@ export default class extends React.Component {
     }
 
     renderWeather() {
-        const {weather = [], temperature} = this.props;
+        const {weather = [], temperature, period} = this.props;
 
         // console.log(weather);
+        // console.log(weather.length);
+
+        let weatherDays = [];
+
+        switch (period) {
+            case 1:
+                weatherDays.push(weather[0]);
+                break;
+            case 3:
+                weatherDays.push(weather[0], weather[1], weather[2]);
+                break;
+            case 7:
+                weatherDays = weather;
+                break;
+            default:
+                weatherDays.push(weather[0]);
+        }
 
         return (
             <ul className="list">
-                {weather.map((item, index) => (
+                {weatherDays.map((item, index) => (
                         <li key={index} className="list__item">
                             <span className="temperature">{toCelsius(temperature[index])}</span>
                             <span className="celsius"><sup> 0</sup>C</span>
